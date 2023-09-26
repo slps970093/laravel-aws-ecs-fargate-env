@@ -1,0 +1,54 @@
+{
+    "name": "slps970093/laravel-aws-ecs-fargate-env",
+    "description": "aws ecs fargate deploy tool",
+    "keywords": [
+        "slps970093",
+        "laravel-aws-ecs-fargate-env"
+    ],
+    "homepage": "https://github.com/slps970093/laravel-aws-ecs-fargate-env",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Chou, Yu-Hsien",
+            "email": "slps970093@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Slps970093\\LaravelAwsEcsFargateEnv\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Slps970093\\LaravelAwsEcsFargateEnv\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Slps970093\\LaravelAwsEcsFargateEnv\\LaravelAwsEcsFargateEnvServiceProvider"
+            ],
+            "aliases": {
+                "LaravelAwsEcsFargateEnv": "Slps970093\\LaravelAwsEcsFargateEnv\\LaravelAwsEcsFargateEnvFacade"
+            }
+        }
+    }
+}
