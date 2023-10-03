@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.2
+
+  pre_build: # commands to be run before build
+    commands:
+      - echo Logging in to Amazon ECR....
+      - aws --version
+      # login to Elastic container registry
+      - eval $(aws ecr get-login-password --region ap-southeast-1 --no-include-email | sed 's|https://||')
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REPOSITORY_URL
+      - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+      - echo $ECR_REPOSITORY_URL
+      - echo $CODEBUILD_BUILD_NUMBER
+
+  build:
+    commands:
+      - echo create aws file
+      - php ./aws_build_script.php
+      - docker build -f ./aws_codebuild/nginx-php82-fpm/docker/Dockerfile -t $ECR_REPOSITORY_URL:latest $PWD
+      - docker tag $ECR_REPOSITORY_URL:latest $ECR_REPOSITORY_URL:$CODEBUILD_BUILD_NUMBER
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker image ls -a
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REPOSITORY_URL
+      - echo $ECR_REPOSITORY_URL
+      - docker push $ECR_REPOSITORY_URL:$CODEBUILD_BUILD_NUMBER
+      - printf '{"ImageURI":"%s"}' $ECR_REPOSITORY_URL:$CODEBUILD_BUILD_NUMBER > imageDetail.json
+
+artifacts:
+  files:
+    - imageDetail.json
+    - appspec.yaml
+    - taskdef.json

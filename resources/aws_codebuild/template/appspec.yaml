@@ -1,0 +1,12 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: <TASK_DEFINITION>
+        LoadBalancerInfo:
+          ContainerName: "<ECS_CONTAINER_NAME>"
+          ContainerPort: 80
+#Hooks:
+#  - AfterAllowTestTraffic: <LAMBDA_AFTER_ALLOW_TEST_TRAFFIC_ARN>
+#  - BeforeAllowTraffic: <LAMBDA_CLOUDFRONT_INVALID_ARN>

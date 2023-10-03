@@ -1,0 +1,69 @@
+{
+  "executionRoleArn": "<ECS_EXECUTE_ROLE_ARN>",
+  "taskRoleArn": "<ECS_TASK_ROLE_ARN>",
+  "containerDefinitions": [
+    {
+      "name": "<ECS_CONTAINER_NAME>",
+      "image": "<IMAGE1_NAME>",
+      "essential": true,
+      "environment": [
+        {
+          "name": "AWS_REGION",
+          "value": "<AWS_REGION>"
+        }
+      ],
+      "linuxParameters": {
+        "initProcessEnabled": true,
+        "capabilities": {
+          "add": [
+            "SYS_PTRACE"
+          ]
+        }
+      },
+      "ulimits": [
+        {
+          "name": "nofile",
+          "softLimit": 50000,
+          "hardLimit": 50000
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        },
+        {
+          "hostPort": 443,
+          "protocol": "tcp",
+          "containerPort": 443
+        }
+      ],
+      "secrets": [
+        {
+          "name": "AWS_SECRETS_MANAGER_SECRET_STRING",
+          "valueFrom": "<AWS_SECRETS_MANAGER_ARN>"
+        },
+          {
+              "name": "APP_KEY",
+              "valueFrom": "<AWS_SECRETS_MANAGER_ARN>:APP_KEY::"
+          }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "<AWS_LOG_GROUP_NAME>",
+          "awslogs-region": "<AWS_LOG_REGION>",
+          "awslogs-stream-prefix": "<AWS_LOG_STREAM_PREFIX>"
+        }
+      }
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "cpu": "<ECS_TASK_CPU>",
+  "memory": "<ECS_TASK_MEMORY>",
+  "family": "<ECS_TASK_DEFINITION_FAMILY>"
+}
