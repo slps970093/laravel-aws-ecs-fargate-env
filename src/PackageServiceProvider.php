@@ -21,7 +21,7 @@ class PackageServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('laravel-aws-ecs-fargate-env.php'),
-            ], 'config');
+            ], 'aws-ecs-fargate-config');
 
 
             # nginx php 8.2
