@@ -2,6 +2,7 @@
 
 namespace Slps970093\LaravelAwsEcsFargateEnv\Tests\Http\Controllers;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Orchestra\Testbench\TestCase;
 use Slps970093\LaravelAwsEcsFargateEnv\Http\Events\Codedeploy\EventHookTrigger;
@@ -35,6 +36,7 @@ class LambdaEventControllerTest extends TestCase
 
     protected function getPackageProviders($app)
     {
+        Config::set('aws-ecs-fargate-env.listens', true);
         return [
           PackageServiceProvider::class
         ];
