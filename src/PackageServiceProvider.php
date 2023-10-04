@@ -20,14 +20,18 @@ class PackageServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-aws-ecs-fargate-env.php'),
+                __DIR__.'/../config/config.php' => config_path('aws-ecs-fargate-env.php'),
             ], 'aws-ecs-fargate-config');
-
 
             # nginx php 8.2
             $this->publishes([
                 __DIR__ . '/../resources/aws_codebuild/nginx-php82-fpm' => base_path('aws_codebuild/nginx-php82-fpm')
             ],'aws-ecs-fargate-nginx-php82');
+
+            # 建置工具
+            $this->publishes([
+                __DIR__ . '/../resources/aws_codebuild/build-spec-tool' => base_path('')
+            ],'aws-ecs-fargate-build-spec-tool');
 
             # codebuild 範本
             $this->publishes([
