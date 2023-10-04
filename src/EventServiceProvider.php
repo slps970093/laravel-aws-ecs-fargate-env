@@ -14,5 +14,11 @@ class EventServiceProvider extends BaseEventServiceProvider
         $this->listen = [
             EventHookTrigger::class => config('aws-ecs-fargate-env.listens', [])
         ];
+
+        $events = app('events');
+
+        foreach (config('aws-ecs-fargate-env.listens', []) as $listener) {
+            $events->listen(EventHookTrigger::class, $listener);
+        }
     }
 }
