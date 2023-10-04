@@ -22,6 +22,29 @@ class LambdaEventControllerTest extends TestCase
         Event::assertNotDispatched(EventHookTrigger::class);
     }
 
+    public function test_check_http_auth_fail()
+    {
+        Config::set('aws-ecs-fargate-env.hook.auth', true);
+        Config::set('aws-ecs-fargate-env.hook.token', 66666);
+
+        $httpResult = $this->get('aws/codedeploy/lambda-event');
+
+        $httpResult->assertStatus(403);
+    }
+
+    public function test_check_http_auth_success()
+    {
+        Config::set('aws-ecs-fargate-env.hook.auth', true);
+        Config::set('aws-ecs-fargate-env.hook.token', 66666);
+
+        $httpResult = $this->get('aws/codedeploy/lambda-event',[
+            'x-auth-token' => 66666
+        ]);
+
+        $httpResult->assertStatus(200)
+            ->assertJsonStructure(['status']);
+    }
+
     public function test_check_http_response_ok_trigger_event()
     {
         Event::fake();
