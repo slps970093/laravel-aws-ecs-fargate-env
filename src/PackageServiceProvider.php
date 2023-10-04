@@ -14,7 +14,7 @@ class PackageServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        if (config('aws-ecs-fargate-env.listens', false)) {
+        if (config('aws-ecs-fargate-env.enabled', false)) {
             $this->loadRoutesFrom(__DIR__.'/routes.php');
         }
 

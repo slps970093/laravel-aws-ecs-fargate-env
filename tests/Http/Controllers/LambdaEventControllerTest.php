@@ -36,7 +36,7 @@ class LambdaEventControllerTest extends TestCase
 
     protected function getPackageProviders($app)
     {
-        Config::set('aws-ecs-fargate-env.listens', true);
+        Config::set('aws-ecs-fargate-env.enabled', true);
         return [
           PackageServiceProvider::class
         ];
